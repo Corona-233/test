@@ -1,0 +1,113 @@
+/* 全局样式 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+.user-form {
+    display: flex; /* 使用 flex 布局 */
+    flex-wrap: nowrap; /* 防止换行 */
+    justify-content: space-between; /* 在可用空间内均匀分配 */
+}
+
+.user-form input {
+    padding: 10px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px; /* 输入框间距 */
+    flex: 1; /* 输入框占用剩余空间 */
+}
+
+.user-form input:last-child {
+    margin-right: 0; /* 最后一个输入框不设置右边距 */
+}
+
+.user-form button {
+    padding: 10px;
+    background-color: #2980b9;
+    color: #fff;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 0 0 150px; /* 固定按钮宽度 */
+}
+
+.user-form button:hover {
+    background-color: #3498db;
+}
+
+/* 用户列表样式 */
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #ecf0f1;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+ul li:nth-child(even) {
+    background-color: #dfe6e9;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #e74c3c;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+
+ul li a:hover {
+    color: #c0392b;
+}
+
+/* 编辑和删除按钮容器样式 */
+.action-buttons {
+    display: inline-flex; /* 使用 flex 布局来确保按钮间距固定 */
+    gap: 10px; /* 按钮之间的间距 */
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #999;
+    font-size: 0.9rem;
+}
+
