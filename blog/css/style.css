@@ -1,0 +1,154 @@
+/* 页面背景 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('/images/background.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    height: 100%;
+    overflow-x: hidden; /* 防止横向滚动条 */
+}
+
+/* 固定导航栏 */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    z-index: 1000;
+    transform: translateY(0);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+header.hidden {
+    transform: translateY(-100%);
+}
+
+header:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* 导航栏列表样式 */
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #007BFF;
+}
+
+/* Hero 区域动态展开效果 */
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* 初始全屏 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    z-index: 10;
+    transition: height 2s ease, opacity 2s ease;
+}
+
+#hero h1, #hero p {
+    margin: 0;
+    font-size: 4rem; /* 初始字体大小 */
+    transition: font-size 0.8s ease, transform 0.8s ease; /* 添加平滑过渡 */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 2s forwards; /* 加入初始动画 */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#hero.scrolled {
+    height: 20vh; /* 滚动后缩小到屏幕顶部 */
+    opacity: 0.8;
+}
+
+/* 主内容区域 */
+main {
+    padding-top: 40px; /* 给予顶部空间，避免内容与导航栏重叠 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* page-content 区域 */
+#page-content {
+    width: 100%;
+    padding: 20px 0;
+}
+
+/* 白色半透明框样式，仅应用于页面特定部分 */
+.page-section {
+    width: 90%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    backdrop-filter: blur(5px);
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.page-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .page-section {
+        width: 95%;
+        padding: 15px;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+    }
+}
+
+/* 注脚样式 */
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    /* 修改为 relative 让 footer 随页面内容流动 */
+    position: relative; /* 默认为 relative，避免固定在屏幕底部 */
+    margin-top: 40px; /* 页面内容和 footer 之间的间距 */
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
