@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="main" onclick="loadPage('main')">主页</a></li>
+                <li><a href="articles" onclick="loadPage('articles')">文章</a></li>
+                <li><a href="achievements" onclick="loadPage('achievements')">成果</a></li>
+                <li><a href="discussion" onclick="loadPage('discussion')">讨论</a></li>
+                <li><a href="about" onclick="loadPage('about')">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="content">
+            <!-- 动态加载的内容 -->
+        </section>
+    </main>
+
+</body>
+</html>
