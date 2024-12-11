@@ -1,0 +1,223 @@
+/* 页面背景 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('/images/bg.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    height: 100%;
+    overflow-x: hidden; /* 防止横向滚动条 */
+}
+
+/* 固定导航栏 */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0); /* 初始完全透明 */
+    padding: 20px 20px;
+    z-index: 1000;
+    transform: translateY(0);
+    transition: transform 1s ease, opacity 1s ease, background-color 0.5s ease; /* 添加背景透明度渐变过渡 */
+    opacity: 0; /* 初始透明，等待 Hero 完成动画后显示 */
+    pointer-events: none; /* 防止透明时交互 */
+}
+
+header.hidden {
+    transform: translateY(-100%); /* 向上隐藏 */
+}
+
+header.visible {
+    opacity: 1;
+    pointer-events: auto; /* 恢复交互功能 */
+}
+
+header:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 导航栏列表样式 */
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #007BFF;
+}
+
+/* Hero 区域动态展开效果 */
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* 初始全屏 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    z-index: 10;
+    animation: heroFadeIn 2s ease forwards; /* Hero 动画 */
+}
+
+/* V 形箭头样式 */
+#scroll-arrow {
+    position: absolute;
+    bottom: 20px; /* 距离底部一定距离 */
+    animation: bounce 1.5s ease-in-out infinite; /* 动画效果 */
+    cursor: pointer; /* 鼠标悬停时显示手形指针 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 确保箭头在所有其他元素之上 */
+}
+
+#scroll-arrow svg {
+    width: 50px;
+    height: 50px;
+    fill: white; /* 白色箭头 */
+}
+
+/* 向下滚动箭头的动画 */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(15px); /* 向下最大偏移 */
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+#hero h1 {
+    margin: 0;
+    font-size: 4rem; /* 初始字体大小 */
+    transition: font-size 0.8s ease, transform 0.8s ease; /* 添加平滑过渡 */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 2s forwards; /* 初始动画 */
+}
+
+#hero p {
+    margin: 0;
+    font-size: 2rem; /* 初始字体大小 */
+    transition: font-size 0.8s ease, transform 0.8s ease; /* 添加平滑过渡 */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 2s forwards; /* 初始动画 */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 其他页面样式 */
+.page-section {
+    width: 90%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 80px auto;
+    backdrop-filter: blur(5px);
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.page-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .page-section {
+        width: 95%;
+        padding: 15px;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+    }
+}
+
+/* 注脚样式 */
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    position: relative;
+    margin-top: 40px;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* 回到顶部按钮样式 */
+#back-to-top {
+    position: fixed;
+    
+    bottom: 18%; /* 距离底部 */
+    right: 6%; /* 距离右侧 */
+    width: 60px; /* 调整按钮宽度 */
+    height: 80px; /* 调整按钮高度 */
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    border-radius: 10px; /* 圆角按钮 */
+    display: flex;
+    flex-direction: column; /* 垂直排列箭头和文字 */
+    justify-content: center; /* 垂直居中 */
+    align-items: center; /* 水平居中 */
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    padding: 10px 15px; /* 内边距调整 */
+    font-size: 18px; /* 调整字体大小 */
+}
+
+#back-to-top:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    transform: scale(1.02); /* 鼠标悬停时放大效果 */
+}
+
+/* 箭头样式 */
+#arrow-up {
+    font-size: 24px; /* 调整箭头的字体大小 */
+    margin-top: 6px;
+}
+
+/* TOP 文本样式 */
+#top-text {
+    font-size: 14px; /* 调整文字大小 */
+    margin-top: 6px; /* 文字和箭头之间的间距 */
+    
+}

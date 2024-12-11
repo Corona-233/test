@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入Prism.js的CSS文件（代码高亮主题） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-tomorrow.min.css">
+    <!-- 引入Prism.js的JS文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/prism.min.js"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+
+    <style>
+    /* 代码块容器样式 */
+    .code-box {
+        border: 1px solid #333; /* 边框颜色 */
+        border-radius: 8px; /* 圆角 */
+        overflow: hidden; /* 防止内容溢出 */
+        width: 100%; /* 自适应宽度 */
+        background-color: #1e1e1e; /* 背景色（深色风格） */
+        color: white; /* 文字颜色 */
+        margin-top: 10px; /* 缩小代码区域与标题栏的距离 */
+    }
+
+    /* 顶部标题区域样式（无背景色，字体改为白色） */
+    .code-header {
+        padding: 5px 20px; /* 减小内边距 */
+        display: flex; /* 使用flex布局 */
+        justify-content: space-between; /* 左右分隔 */
+        align-items: center; /* 垂直居中 */
+        color: white; /* 文字颜色 */
+        font-size: 16px; /* 标题字体大小 */
+    }
+
+    .code-title {
+        font-size: 14px; /* 小标题字体大小 */
+        font-weight: bold; /* 字体加粗 */
+    }
+
+    /* 复制按钮样式（去掉边框，背景改为深色，文字改为白色） */
+    .copy-btn {
+        background-color: transparent; /* 去掉背景色 */
+        color: white; /* 文字颜色为白色 */
+        border: none; /* 去掉边框 */
+        padding: 5px 10px; /* 内边距 */
+        font-size: 14px; /* 字体大小 */
+        cursor: pointer; /* 鼠标指针 */
+        transition: background-color 0.3s ease; /* 按钮背景色过渡效果 */
+    }
+
+    .copy-btn:hover {
+        background-color: #333; /* 悬停时，背景色变深 */
+    }
+
+    /* 代码块样式 */
+    pre {
+        background-color: #2b2b2b; /* 代码区域背景色 */
+        padding: 20px; /* 内边距 */
+        font-family: monospace; /* 等宽字体 */
+        font-size: 16px; /* 增大字体大小 */
+        line-height: 1.6; /* 增加行间距，使得代码更容易阅读 */
+        overflow-x: auto; /* 允许水平滚动 */
+        margin: 0; /* 取消默认外边距 */
+        white-space: pre-wrap; /* 自动换行 */
+        word-wrap: break-word; /* 长单词换行 */
+        border-top: 1px solid #333; /* 代码区域顶部边框 */
+    }
+    </style>
+
+    <script>
+        function copyCode() {
+            // 获取代码区域
+            var codeBlock = document.getElementById("code-block");
+            
+            // 获取代码文本，去除前后的空行
+            var codeText = codeBlock.textContent || codeBlock.innerText;
+            codeText = codeText.trim(); // 去除前后空白字符（包括换行符）
+            
+            // 创建一个临时文本框
+            var tempTextArea = document.createElement("textarea");
+            
+            // 将代码区域的内容赋值给文本框
+            tempTextArea.value = codeText;
+            
+            // 将文本框添加到页面
+            document.body.appendChild(tempTextArea);
+            
+            // 选中文本框中的内容
+            tempTextArea.select();
+            tempTextArea.setSelectionRange(0, 99999); // 对于手机端
+            
+            // 执行复制操作
+            document.execCommand("copy");
+            
+            // 移除临时文本框
+            document.body.removeChild(tempTextArea);
+            
+            // 更改按钮文本为“已复制”
+            var copyBtn = document.querySelector(".copy-btn");
+            copyBtn.textContent = "已复制";
+            
+            // 2秒后恢复按钮文本为“复制代码”
+            setTimeout(function() {
+                copyBtn.textContent = "复制代码";
+            }, 2000);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../articles" onclick="loadPage('articles')">返回</a ></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-section">
+            <h2>Html基础</h2>
+            <div class="code-box">
+                <!-- 顶部标题区域 -->
+                <div class="code-header">
+                    <span class="code-title">代码示例</span>
+                    <button class="copy-btn" onclick="copyCode()">复制代码</button>
+                </div>
+<!-- 代码区域 -->
+<pre id="code-block" class="language-markup"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;My Page&lt;/title&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <!-- 回到顶部按钮 -->
+    <div id="back-to-top" onclick="scrollToTop()">
+        <div id="arrow-up" style="text-align: center;">▲</div>
+        <div id="top-text" style="text-align: center;">TOP</div>
+    </div>
+</body>
+</html>
