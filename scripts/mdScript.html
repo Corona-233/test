@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD 转 HTML 转换器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #999;
+        }
+        #file-input {
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #preview {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            min-height: 200px;
+            background-color: #f9f9f9;
+        }
+        .download-btn {
+            background-color: #2196F3;
+        }
+        .download-btn:hover {
+            background-color: #0b7dda;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MD 转 HTML 转换器</h1>
+        
+        <div class="upload-area" id="upload-area">
+            <p>点击或拖拽 Markdown 文件到此处上传</p>
+            <input type="file" id="file-input" accept=".md,.markdown" />
+        </div>
+        
+        <div>
+            <label for="css-style">选择样式:</label>
+            <select id="css-style">
+                <option value="github">GitHub 风格</option>
+                <option value="air">Air 风格</option>
+                <option value="dark">暗黑风格</option>
+                <option value="custom">自定义 CSS</option>
+            </select>
+        </div>
+        
+        <div id="custom-css-container" style="display: none;">
+            <label for="custom-css">自定义 CSS:</label>
+            <textarea id="custom-css" rows="5" style="width: 100%;"></textarea>
+        </div>
+        
+        <button id="convert-btn">转换为 HTML</button>
+        
+        <div id="preview">
+            <p>HTML 预览将显示在这里...</p>
+        </div>
+        
+        <button id="download-btn" class="download-btn" disabled>下载 HTML 文件</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const convertBtn = document.getElementById('convert-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const preview = document.getElementById('preview');
+        const cssStyleSelect = document.getElementById('css-style');
+        const customCssContainer = document.getElementById('custom-css-container');
+        const customCssTextarea = document.getElementById('custom-css');
+
+        let currentFile = null;
+        let htmlContent = '';
+
+        // 点击上传区域触发文件选择
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // 拖拽上传功能
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4CAF50';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ccc';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ccc';
+            
+            if (e.dataTransfer.files.length) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        // 文件选择处理
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                handleFile(fileInput.files[0]);
+            }
+        });
+
+        // 样式选择变化
+        cssStyleSelect.addEventListener('change', () => {
+            if (cssStyleSelect.value === 'custom') {
+                customCssContainer.style.display = 'block';
+            } else {
+                customCssContainer.style.display = 'none';
+            }
+        });
+
+        // 转换按钮点击事件
+        convertBtn.addEventListener('click', () => {
+            if (!currentFile) {
+                alert('请先上传 Markdown 文件');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const markdownContent = e.target.result;
+                convertToHtml(markdownContent);
+            };
+            reader.readAsText(currentFile);
+        });
+
+        // 下载按钮点击事件
+        downloadBtn.addEventListener('click', () => {
+            if (!htmlContent) {
+                alert('没有可下载的内容');
+                return;
+            }
+            
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.name.replace(/\.md$|\.markdown$/i, '') + '.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // 处理上传的文件
+        function handleFile(file) {
+            if (!file.name.match(/\.(md|markdown)$/i)) {
+                alert('请上传 Markdown 文件 (.md 或 .markdown 扩展名)');
+                return;
+            }
+            
+            currentFile = file;
+            uploadArea.innerHTML = `<p>已选择文件: ${file.name}</p>`;
+            downloadBtn.disabled = true;
+            preview.innerHTML = '<p>HTML 预览将显示在这里...</p>';
+        }
+
+        // 转换 Markdown 为 HTML
+        function convertToHtml(markdown) {
+            // 简单的 Markdown 解析器 (可以替换为更完整的库如 marked.js)
+            const html = simpleMarkdownParser(markdown);
+            
+            // 获取选中的样式
+            let css = '';
+            const style = cssStyleSelect.value;
+            
+            if (style === 'custom') {
+                css = customCssTextarea.value;
+            } else {
+                css = getPresetCss(style);
+            }
+            
+            // 构建完整的 HTML 文档
+            htmlContent = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${currentFile.name.replace(/\.md$|\.markdown$/i, '')}</title>
+    <style>
+        ${css}
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        ${html}
+    </div>
+</body>
+</html>`;
+            
+            // 显示预览
+            preview.innerHTML = htmlContent;
+            downloadBtn.disabled = false;
+        }
+
+        // 简单的 Markdown 解析器
+        function simpleMarkdownParser(markdown) {
+            // 替换标题
+            markdown = markdown.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            markdown = markdown.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            markdown = markdown.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            
+            // 替换粗体和斜体
+            markdown = markdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            markdown = markdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // 替换链接和图片
+            markdown = markdown.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
+            markdown = markdown.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
+            
+            // 替换代码块和内联代码
+            markdown = markdown.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            markdown = markdown.replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            // 替换列表
+            markdown = markdown.replace(/^\s*\*\s(.*$)/gm, '<li>$1</li>');
+            markdown = markdown.replace(/<li>.*<\/li>/g, function(match) {
+                return '<ul>' + match + '</ul>';
+            });
+            
+            // 替换段落
+            markdown = markdown.replace(/^(?!<[a-z])(.*$)/gm, function(m) {
+                return m.trim() ? '<p>' + m + '</p>' : '';
+            });
+            
+            return markdown;
+        }
+
+        // 获取预设 CSS
+        function getPresetCss(style) {
+            const styles = {
+                github: `
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+                        line-height: 1.5;
+                        color: #24292e;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    .markdown-body h1, .markdown-body h2 {
+                        padding-bottom: 0.3em;
+                        border-bottom: 1px solid #eaecef;
+                    }
+                    .markdown-body pre {
+                        background-color: #f6f8fa;
+                        border-radius: 3px;
+                        padding: 16px;
+                        overflow: auto;
+                    }
+                    .markdown-body code {
+                        background-color: rgba(27,31,35,0.05);
+                        border-radius: 3px;
+                        padding: 0.2em 0.4em;
+                    }
+                    .markdown-body a {
+                        color: #0366d6;
+                        text-decoration: none;
+                    }
+                    .markdown-body a:hover {
+                        text-decoration: underline;
+                    }
+                `,
+                air: `
+                    body {
+                        font-family: 'Helvetica Neue', Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #444;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background-color: #f9f9f9;
+                    }
+                    .markdown-body {
+                        background-color: white;
+                        padding: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    .markdown-body h1, .markdown-body h2 {
+                        color: #2c3e50;
+                    }
+                    .markdown-body pre {
+                        background-color: #f0f0f0;
+                        padding: 15px;
+                        border-radius: 4px;
+                        overflow: auto;
+                    }
+                    .markdown-body code {
+                        font-family: 'Courier New', monospace;
+                        color: #c7254e;
+                        background-color: #f9f2f4;
+                        padding: 2px 4px;
+                        border-radius: 4px;
+                    }
+                    .markdown-body a {
+                        color: #3498db;
+                        text-decoration: none;
+                    }
+                    .markdown-body a:hover {
+                        text-decoration: underline;
+                    }
+                `,
+                dark: `
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        line-height: 1.6;
+                        color: #e0e0e0;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background-color: #1e1e1e;
+                    }
+                    .markdown-body {
+                        background-color: #2d2d2d;
+                        padding: 30px;
+                        border-radius: 5px;
+                    }
+                    .markdown-body h1, .markdown-body h2 {
+                        color: #569cd6;
+                    }
+                    .markdown-body pre {
+                        background-color: #252525;
+                        padding: 15px;
+                        border-radius: 4px;
+                        overflow: auto;
+                        color: #d4d4d4;
+                    }
+                    .markdown-body code {
+                        font-family: Consolas, 'Courier New', monospace;
+                        color: #ce9178;
+                        background-color: #3a3a3a;
+                        padding: 2px 4px;
+                        border-radius: 4px;
+                    }
+                    .markdown-body a {
+                        color: #4ec9b0;
+                        text-decoration: none;
+                    }
+                    .markdown-body a:hover {
+                        text-decoration: underline;
+                    }
+                `
+            };
+            
+            return styles[style] || styles.github;
+        }
+    </script>
+</body>
+</html>
