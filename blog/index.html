@@ -11,11 +11,11 @@
     <header>
         <nav>
             <ul>
-                <li><a href="main" onclick="loadPage('main')">主页</a></li>
-                <li><a href="articles" onclick="loadPage('articles')">文章</a></li>
-                <li><a href="achievements" onclick="loadPage('achievements')">成果</a></li>
-                <li><a href="discussion" onclick="loadPage('discussion')">讨论</a></li>
-                <li><a href="about" onclick="loadPage('about')">关于</a></li>
+                <li><a href="main" onclick="loadPage('main')">主页</a ></li>
+                <li><a href="articles" onclick="loadPage('articles')">文章</a ></li>
+                <li><a href="achievements" onclick="loadPage('achievements')">成果</a ></li>
+                <li><a href="discussion" onclick="loadPage('discussion')">讨论</a ></li>
+                <li><a href="about" onclick="loadPage('about')">关于</a ></li>
             </ul>
         </nav>
     </header>
@@ -26,8 +26,11 @@
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 个人博客 | Designed by Your Name</p>
-    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <div id="back-to-top" onclick="scrollToTop()">
+        <div id="arrow-up" style="text-align: center;">▲</div>
+        <div id="top-text" style="text-align: center;">TOP</div>
+    </div>
 </body>
 </html>
