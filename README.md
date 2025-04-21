@@ -1,3 +1,5 @@
-这是一个简单的管理系统。（或许会加一些有趣的东西）
+## 这里有许多有趣的文件 / There are many interesting files here
 
-This is a simple management system...
+[ [games](./games/) ] 这个目录下有许多小游戏的源码 / This directory contains the source code of many mini-games
+
+[ [scripts](./scripts/) ] 这个目录下有许多实用脚本的源码 / This directory contains the source code for many useful scripts
