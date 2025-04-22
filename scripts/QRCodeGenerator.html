@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器</title>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@master/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        #input-container {
+            margin: 20px 0;
+        }
+        #text-input {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #qrcode {
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            display: inline-block;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .options {
+            margin: 15px 0;
+        }
+        label {
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>二维码生成器</h1>
+    
+    <div id="input-container">
+        <input type="text" id="text-input" placeholder="输入文本或URL..." autofocus>
+    </div>
+
+    <div class="options">
+        <label>
+            尺寸：
+            <select id="size-select">
+                <option value="100">小 (100x100)</option>
+                <option value="200" selected>中 (200x200)</option>
+                <option value="300">大 (300x300)</option>
+            </select>
+        </label>
+        <label>
+            颜色：
+            <input type="color" id="color-picker" value="#000000">
+        </label>
+    </div>
+
+    <div id="qrcode"></div>
+
+    <div>
+        <button id="download-btn" disabled>下载二维码</button>
+        <button id="clear-btn">清空</button>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const downloadBtn = document.getElementById('download-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const sizeSelect = document.getElementById('size-select');
+        const colorPicker = document.getElementById('color-picker');
+
+        let currentQRCode = null;
+
+        // 生成二维码函数
+        function generateQRCode() {
+            const text = textInput.value.trim();
+            if (!text) {
+                qrcodeDiv.innerHTML = '';
+                downloadBtn.disabled = true;
+                return;
+            }
+
+            const size = parseInt(sizeSelect.value);
+            const color = colorPicker.value;
+
+            qrcodeDiv.innerHTML = '';
+            currentQRCode = new QRCode(qrcodeDiv, {
+                text: text,
+                width: size,
+                height: size,
+                colorDark: color,
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            downloadBtn.disabled = false;
+        }
+
+        // 下载二维码
+        function downloadQRCode() {
+            if (!currentQRCode) return;
+            
+            const canvas = qrcodeDiv.querySelector('canvas');
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 事件监听
+        textInput.addEventListener('input', generateQRCode);
+        sizeSelect.addEventListener('change', generateQRCode);
+        colorPicker.addEventListener('change', generateQRCode);
+        downloadBtn.addEventListener('click', downloadQRCode);
+        clearBtn.addEventListener('click', () => {
+            textInput.value = '';
+            qrcodeDiv.innerHTML = '';
+            downloadBtn.disabled = true;
+        });
+
+        // 初始化生成（如果有默认值）
+        generateQRCode();
+    </script>
+</body>
+</html>
