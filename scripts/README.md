@@ -2,4 +2,4 @@
 
 [将md文件转换成html文件 / md to HTML](https://corona-233.github.io/test/scripts/mdScript.html)
 
-[二维码生成器 / generate QR codes](https://github.com/Corona-233/test/scripts/QRCodeGenerator.html)
+[二维码生成器 / generate QR codes](https://corona-233.github.io/test/scripts/QRCodeGenerator.html)
