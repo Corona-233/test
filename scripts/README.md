@@ -4,3 +4,4 @@
 
 [二维码生成器 / generate QR codes](https://corona-233.github.io/test/scripts/QRCodeGenerator.html)
 
+countLines.js 可以查询项目的代码行数，过滤注释以及空行。
