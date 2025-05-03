@@ -28,8 +28,8 @@
 
 使用方法：
 
-chrome://extensions/
+[Chrome浏览器] chrome://extensions/
 
-edge://extensions/
+[Edge浏览器] edge://extensions/
 
-about:debugging#/runtime/this-firefox
+[火狐浏览器] about:debugging#/runtime/this-firefox
